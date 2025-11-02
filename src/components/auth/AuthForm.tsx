@@ -1,4 +1,6 @@
 import {useForm} from "react-hook-form";
+import supabase from "../../utils/supabase";
+import toast from "react-hot-toast";
 
 type formType = "login" | "signup";
 
@@ -19,6 +21,25 @@ const AuthForm = ({ type }: AuthFormProps) => {
         formState: { errors },
     } = useForm<FormValues>();
 
+    async function submitHandler(data: FormValues){
+        console.log("Submitted: ", data);
+
+        try {
+            const userResponse = await supabase.auth.signUp({
+                email: data.identifier,
+                password: data.password,
+            })
+
+            if(!userResponse.data){
+                throw new Error("error aa gya ji");
+            }
+            
+            toast.success("Verification mail sent!");
+        } catch (error) {
+            console.log("Profile nahi bani ji", error)
+        }
+    }
+
     const validateUsername = (value: string): boolean =>{
         return /^[a-zA-Z_][a-zA-Z0-9._]{2,20}$/.test(value);
     }
@@ -26,7 +47,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     }
     return (
-        <form className="flex flex-col gap-8  w-full">
+        <form className="flex flex-col gap-8  w-full" onSubmit={handleSubmit(submitHandler)}>
             <div className="flex flex-col items-start gap-3">
                 {type == "signup" && (
                     <input
