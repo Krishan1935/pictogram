@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@theme{
+    --color-ink-black: #111012;
+    --color-gray: #808080;
+    --color-ocean-blue: #0865B2;
+    --color-jet-black: #212121;
+    --color-bright-blue: #3C9EEF;
+
+    --font-madimi-one: "Madimi One", sans-serif;
+    --font-roboto-flex: "Roboto Flex", sans-serif;
+}
